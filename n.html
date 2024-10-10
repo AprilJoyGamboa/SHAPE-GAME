@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Transformation Game</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('n.jpg'); /* Background image */
+            background-size: cover; /* Ensure the image covers the entire section */
+            background-position: center; /* Center the image */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(57, 219, 16);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Container for shape transformation */
+        #container {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 20px;
+            border: 4px solid #fff;
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #plane-figure {
+            position: absolute;
+            transition: all 0.5s ease; /* Smooth transition */
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* Label for plane figure */
+        #plane-label {
+            position: absolute;
+            bottom: 10px;
+            color: white;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Button Styling */
+        #transform-btn, #next-btn, #next-game-btn {
+            font-size: 1.2em;
+            margin: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #81c784, #66bb6a); /* Gradient green background */
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            color: #fff;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #transform-btn:hover, #next-btn:hover, #next-game-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Message Styling */
+        #message {
+            font-size: 1.5em;
+            margin-top: 20px;
+            display: none; /* Hide by default */
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Shape Transformation Game</h1>
+    <div id="container">
+        <img id="plane-figure" src="s.jpg" alt="Plane Figure">
+        <div id="plane-label">Square</div> <!-- Label for the plane figure -->
+    </div>
+    <button id="transform-btn">Transform!</button>
+    <button id="next-btn" style="display: none;">Next Transformation</button>
+    <button id="next-game-btn" style="display: none;" onclick="location.href='guessing_game.html'">Next Game</button>
+    <div id="message"></div> <!-- Message display -->
+
+    <script>
+        const planeFigure = document.getElementById('plane-figure');
+        const messageDiv = document.getElementById('message');
+        const planeLabel = document.getElementById('plane-label');
+        const nextButton = document.getElementById('next-btn');
+        const nextGameButton = document.getElementById('next-game-btn');
+
+        // Plane and solid shape data
+        const transformations = [
+            { plane: 's.jpg', solid: '1.jpg', name: 'Cube' }, // Square to Cube
+            { plane: 'tr.png', solid: '5.jpg', name: 'Pyramid' }, // Triangle to Pyramid
+            { plane: 're.png', solid: '00.jpg', name: 'Rectangular Prism' }, // Rectangle to Rectangular Prism
+            { plane: '5.jpg', solid: '4.jpg', name: 'Cone' }, // Cone to Cone
+            { plane: 'ci.jpg', solid: '2.jpg', name: 'Sphere' } // Circle to Sphere
+        ];
+
+        let currentIndex = 0; // Index to track the current transformation
+
+        // Function to transform the shape
+        function transformShape() {
+            const currentTransformation = transformations[currentIndex];
+            planeFigure.src = currentTransformation.solid;
+
+            messageDiv.textContent = `It's now a ${currentTransformation.name}! 🎉`;
+            messageDiv.style.display = 'block';
+
+            // Show the next button instead of hiding the message immediately
+            nextButton.style.display = 'block'; 
+        }
+
+        // Function to set the plane figure back and move to the next shape
+        function nextTransformation() {
+            currentIndex = (currentIndex + 1) % transformations.length; // Move to the next shape
+            const currentTransformation = transformations[currentIndex];
+            planeFigure.src = currentTransformation.plane;
+            planeLabel.textContent = currentTransformation.label; // Update label
+            messageDiv.style.display = 'none'; // Hide message
+            nextButton.style.display = 'none'; // Hide next button
+            
+            // Show the next game button if it's the last transformation
+            if (currentIndex === transformations.length - 1) {
+                nextGameButton.style.display = 'block'; // Show next game button
+            }
+        }
+
+        // Add event listener to the buttons
+        document.getElementById('transform-btn').addEventListener('click', transformShape);
+        document.getElementById('next-btn').addEventListener('click', nextTransformation);
+
+    </script>
+
+</body>
+</html>
